@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <title>XXX结清证明</title>
+    <style type="text/css" rel="stylesheet">
+        * {
+            font-size: 14px;
+            font-family: SimSun;
+        }
+
+        body {
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0 auto;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: normal;
+            margin: 15px auto;
+        }
+
+        p {
+            margin: 0 auto;
+            line-height: 24px;
+            text-indent: 28px;
+        }
+
+        .textIndentNOne {
+            text-indent: 0;
+        }
+
+        .calculate {
+            display: -webkit-box;
+            -webkit-box-align: center;
+            padding: 15px 0;
+        }
+
+        .calculate span {
+            display: block;
+        }
+
+        .tc {
+            -webkit-box-flex: 1;
+            flex: 1;
+        }
+
+        .tc p {
+            text-decoration: underline;
+            position: relative;
+            text-indent: 0;
+            font-size: 13px;
+        }
+
+        .tc p em {
+            position: absolute;
+            right: 0;
+            top: -15px;
+            font-size: 10px;
+            font-style: normal;
+            color: #777;
+        }
+
+        .everyDate {
+            /*width: 50px;*/
+            font-size: 13px;
+        }
+
+        .tc p.under {
+            text-decoration: none;
+        }
+
+        .tc p.under em {
+            left: 80px;
+            top: -5px;
+        }
+
+        .btSign {
+            position: relative;
+            padding-bottom: 50px;
+        }
+
+        .yinzhang {
+            position: absolute;
+            bottom: 30px;
+            width: 100px;
+            height: 100px;
+            background-size: 100px 100px;
+        }
+
+        .yinzhang img {
+            width: 100%;
+            height: auto;
+            margin-left: -100px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<p>&nbsp;</p>
+<h1 class="center">XXX贷款结清证明</h1>
+<p>&nbsp;</p>
+<p>兹证明借款人${name}（性别${sex}，身份证号${cerNo}）</p>
+<p>
+    于${grantActualDate}在我行办理了${productName}&nbsp;贷款（本金￥${loanAmount}，期限${term}个月，借据号${assetNo}），已于${clearDate}结清全部贷款本息。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>特此证明</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p align="right">XXX</p>
+<p align="right">${nowDate}</p>
+</body>
+</html>
