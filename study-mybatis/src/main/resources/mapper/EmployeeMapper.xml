@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.cherrycheng.study.mybatis.mapper.EmployeeMapper">
+    <select id="selectById" resultType="top.cherrycheng.study.mybatis.model.Employee">
+    SELECT id,last_name as lastName,gender,email,birth FROM employee
+  </select>
+</mapper>
