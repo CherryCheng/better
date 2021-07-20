@@ -19,4 +19,8 @@ public class JavaxValidationController {
     public void test(@RequestBody @Validated JavaxTestDto reqDto) {
         System.out.println(reqDto);
     }
+
+    public static void main(String[] args) {
+        System.out.println("12345678".substring(0, 6));
+    }
 }
