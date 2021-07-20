@@ -6,20 +6,31 @@
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
-            <!--            cherry本地测试-->
-            <!--            <dataSource type="POOLED">-->
-            <!--                <property name="driver" value="com.mysql.jdbc.Driver"/>-->
-            <!--                <property name="url"-->
-            <!--                          value="jdbc:mysql://127.0.0.1:3306/crtest?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;useAffectedRows=true&amp;allowMultiQueries=true"/>-->
-            <!--                <property name="username" value="root"/>-->
-            <!--                <property name="password" value="666666"/>-->
-            <!--            </dataSource>-->
+            <!--            cherry本地测试
+                        <dataSource type="POOLED">
+                            <property name="driver" value="com.mysql.jdbc.Driver"/>
+                            <property name="url"
+                                      value="jdbc:mysql://127.0.0.1:3306/crtest?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;useAffectedRows=true&amp;allowMultiQueries=true"/>
+                            <property name="username" value="root"/>
+                            <property name="password" value="666666"/>
+                        </dataSource>-->
+
+            <!--            开发环境
+                        <dataSource type="POOLED">
+                            <property name="driver" value="com.mysql.jdbc.Driver"/>
+                            <property name="url"
+                                      value="jdbc:mysql://172.16.0.2:3306/portal_java?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;useSSL=false&amp;serverTimezone=GMT%2B8"/>
+                            <property name="username" value="tobuser"/>
+                            <property name="password" value="ts@123"/>
+                        </dataSource>-->
+
+            <!--            POC环境-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url"
-                          value="jdbc:mysql://172.16.0.2:3306/portal_java?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;useSSL=false&amp;serverTimezone=GMT%2B8"/>
-                <property name="username" value="tobuser"/>
-                <property name="password" value="ts@123"/>
+                          value="jdbc:mysql://119.91.119.89:3306/db_risk_data?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;useSSL=false&amp;serverTimezone=GMT%2B8"/>
+                <property name="username" value="dbmgr"/>
+                <property name="password" value="Ts_2020a"/>
             </dataSource>
         </environment>
     </environments>

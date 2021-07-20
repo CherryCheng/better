@@ -5,8 +5,13 @@
 <mapper namespace="top.cherrycheng.study.mybatis.mapper.FeatureResultMapper">
     <insert id="insertByDefault" parameterType="top.cherrycheng.study.mybatis.model.FeatureResult" keyProperty="">
         INSERT INTO feature_result
-            (`name`, cert_no)
-        VALUES (#{name}, #{certNo});
+        (`name`, cert_no, age, mobile, apply_time, marry_status, work_company, income_range, contact_name1,
+         contact_relation1, contact_mobile1, contact_remark1, contact_name2, contact_relation2, contact_mobile2,
+         contact_remark2, request_ip, device_type, device_mac, device_risk)
+        VALUES (#{name}, #{certNo}, #{age}, #{mobile}, #{apply_time}, #{marry_status}, #{work_company}, #{income_range},
+                #{contact_name1}, #{contact_relation1}, #{contact_mobile1}, #{contact_remark1}, #{contact_name2},
+                #{contact_relation2}, #{contact_mobile2}, #{contact_remark2}, #{request_ip}, #{device_type},
+                #{device_mac}, #{device_risk});
     </insert>
 
     <insert id="insert" parameterType="top.cherrycheng.study.mybatis.model.FeatureResult">
@@ -18,7 +23,9 @@
          pbv2_corrclass5badcount_i, pbv2_m1_lco_querycnt_i, pbv2_enforcecnt_i, pbv2_civiljudgmentcnt_i,
          pbv2_nbankloanacccnt_i, pbv2_creditloanbalanceamtsum_d, pbv2_ccminrepaycnt_i, ty_riskcode26_i, ty_riskcode27_i,
          ty_riskcode28_i, ty_fraudscore_i, bj_fraudhmscore_i, fico_creditscore_i, bj_ttscore_i, bj_hyscore_i,
-         ty_bcardscore_i, ty_ccardscore_i, bk_overdueday_i)
+         ty_bcardscore_i, ty_ccardscore_i, bk_overdueday_i, age, mobile, apply_time, marry_status, work_company,
+         income_range, contact_name1, contact_relation1, contact_mobile1, contact_remark1, contact_name2,
+         contact_relation2, contact_mobile2, contact_remark2, request_ip, device_type, device_mac, device_risk)
         VALUES (#{name}, 1, #{certNo}, floor(rand() * 2), floor(rand() * 2), floor(rand() * 2), floor(rand() * 2),
                 floor(rand() * 2), floor(rand() * 2), floor(rand() * 2), floor(1 + rand() * 10), floor(1 + rand() * 10),
                 floor(1 + rand() * 10), floor(1 + rand() * 10), floor(1 + rand() * 10), floor(1 + rand() * 10),
@@ -27,19 +34,40 @@
                 floor(3 + (rand() * 10)) * 10000, floor(1 + rand() * 10), floor(1 + rand() * 10),
                 floor(1 + rand() * 10), floor(1 + rand() * 10), floor(rand() * 100), (350 + floor(rand() * 100) * 5),
                 (400 + floor(rand() * 100) * 4), (350 + floor(rand() * 100) * 5), (350 + floor(rand() * 100) * 5),
-                (400 + floor(rand() * 100) * 2), (600 + floor(rand() * 100) * 2), floor((rand() * 100) / 2));
+                (400 + floor(rand() * 100) * 2), (600 + floor(rand() * 100) * 2), floor((rand() * 100) / 2), #{age},
+                #{mobile}, #{apply_time}, #{marry_status}, #{work_company}, #{income_range}, #{contact_name1},
+                #{contact_relation1}, #{contact_mobile1}, #{contact_remark1}, #{contact_name2}, #{contact_relation2},
+                #{contact_mobile2}, #{contact_remark2}, #{request_ip}, #{device_type}, #{device_mac}, #{device_risk});
     </insert>
 
     <select id="update" resultType="top.cherrycheng.study.mybatis.model.FeatureResult">
         update feature_result
         set `name`=#{name},
-            cert_no=#{certNo}
+            cert_no=#{certNo},
+            age=#{age},
+            mobile=#{mobile},
+            apply_time=#{apply_time},
+            marry_status=#{marry_status},
+            work_company=#{work_company},
+            income_range=#{income_range},
+            contact_name1=#{contact_name1},
+            contact_relation1=#{contact_relation1},
+            contact_mobile1=#{contact_mobile1},
+            contact_remark1=#{contact_remark1},
+            contact_name2=#{contact_name2},
+            contact_relation2=#{contact_relation2},
+            contact_mobile2=#{contact_mobile2},
+            contact_remark2=#{contact_remark2},
+            request_ip=#{request_ip},
+            device_type=#{device_type},
+            device_mac=#{device_mac},
+            device_risk=#{device_risk}
         where id = #{id}
     </select>
 
     <select id="getAllIds" resultType="java.lang.Long">
         select id
         from feature_result
-        where id > 1000
+        where id = 1000
     </select>
 </mapper>
