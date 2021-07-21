@@ -18,10 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author ChengRu
@@ -43,7 +40,7 @@ public class GenerateTestData {
     }
 
     /**
-     * 生成数据：用SQL里定义的值
+     * 批量生成数据
      */
     @Test
     public void batchInsert() throws IOException {
@@ -63,6 +60,37 @@ public class GenerateTestData {
                 mapper.batchInsert(list);
                 session.commit();
                 list.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 批量更新
+     */
+    @Test
+    public void batchUpdateInfo() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        List<FeatureResult> list = Lists.newArrayList();
+        final ChineseMobileNumberGenerator instance = ChineseMobileNumberGenerator.getInstance();
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            final FeatureResultMapper mapper = session.getMapper(FeatureResultMapper.class);
+//            ⚠️能过这里来控制改哪些✔️
+            for (int i = 0; i < 2; i++) {
+                final List<Long> allIds = mapper.getAllIds();
+                for (Long id : allIds) {
+                    final FeatureResult result = new FeatureResult();
+                    setFeatureResult(instance, result, id);
+                    mapper.update(result);
+                    list.add(result);
+                }
+                mapper.batchUpdate(list);
+                session.commit();
+                list.clear();
+                System.out.println("第" + (i + 1) + "次,更新的ID为：" + Arrays.toString(allIds.toArray()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +142,10 @@ public class GenerateTestData {
     private void setFeatureResult(ChineseMobileNumberGenerator instance, FeatureResult result, Long id) {
         String IDCardNumber = ChineseIDCardNumberGenerator.getInstance().generate();
         result.setId(id);
+        // 成茹: todo  如果是修改，哪些不用改？
+//        if (id != null) {
+//
+//        }
         result.setBk_certnovalidday_i(getRandomDateAfterNow());
         result.setName(ChineseNameGenerator.getInstance().generate());
         result.setCertNo(IDCardNumber);

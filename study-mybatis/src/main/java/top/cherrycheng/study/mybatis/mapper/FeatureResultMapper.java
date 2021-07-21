@@ -12,6 +12,8 @@ import java.util.List;
 public interface FeatureResultMapper {
     void batchInsert(List<FeatureResult> list);
 
+    void batchUpdate(List<FeatureResult> list);
+
     /**
      * 用默认值插入
      */

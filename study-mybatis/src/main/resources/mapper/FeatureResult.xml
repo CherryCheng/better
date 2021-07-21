@@ -58,6 +58,33 @@
             , #{item.device_mac}, #{item.device_risk})
         </foreach>
     </insert>
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update feature_result
+            set `name`=#{item.name},
+            cert_no=#{item.certNo},
+            age=#{item.age},
+            mobile=#{item.mobile},
+            apply_time=#{item.apply_time},
+            bk_certnovalidday_i=#{item.bk_certnovalidday_i},
+            marry_status=#{item.marry_status},
+            work_company=#{item.work_company},
+            income_range=#{item.income_range},
+            contact_name1=#{item.contact_name1},
+            contact_relation1=#{item.contact_relation1},
+            contact_mobile1=#{item.contact_mobile1},
+            contact_remark1=#{item.contact_remark1},
+            contact_name2=#{item.contact_name2},
+            contact_relation2=#{item.contact_relation2},
+            contact_mobile2=#{item.contact_mobile2},
+            contact_remark2=#{item.contact_remark2},
+            request_ip=#{item.request_ip},
+            device_type=#{item.device_type},
+            device_mac=#{item.device_mac},
+            device_risk=#{item.device_risk}
+            where id = #{item.id}
+        </foreach>
+    </update>
 
     <select id="update" resultType="top.cherrycheng.study.mybatis.model.FeatureResult">
         update feature_result
@@ -97,8 +124,10 @@
                 #{device_mac}, #{device_risk});
     </insert>
     <select id="getAllIds" resultType="java.lang.Long">
+        -- 身份证为空的前十条
         select id
         from feature_result
-        where id = 32831
+        where bk_certnovalidday_i is null
+        order by id desc limit 10;
     </select>
 </mapper>
