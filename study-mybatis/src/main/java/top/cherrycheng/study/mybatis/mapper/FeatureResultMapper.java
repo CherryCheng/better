@@ -10,6 +10,8 @@ import java.util.List;
  * @Desc
  */
 public interface FeatureResultMapper {
+    void batchInsert(List<FeatureResult> list);
+
     /**
      * 用默认值插入
      */

@@ -3,6 +3,7 @@ package top.cherrycheng;
 import cn.binarywang.tools.generator.ChineseIDCardNumberGenerator;
 import cn.binarywang.tools.generator.ChineseMobileNumberGenerator;
 import cn.binarywang.tools.generator.ChineseNameGenerator;
+import com.google.common.collect.Lists;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -36,7 +37,35 @@ public class GenerateTestData {
         for (int i = 0; i < 100; i++) {
 //            System.out.println(getRandomDate("2020-10-10","2021-07-20"));
 //            System.out.println(getRandomMac());
-            System.out.println(getRandomWorkCompany());
+//            System.out.println(getRandomWorkCompany());
+            System.out.println(getRandomDateAfterNow());
+        }
+    }
+
+    /**
+     * 生成数据：用SQL里定义的值
+     */
+    @Test
+    public void batchInsert() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        ChineseMobileNumberGenerator instance = ChineseMobileNumberGenerator.getInstance();
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        List<FeatureResult> list = Lists.newArrayList();
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            final FeatureResultMapper mapper = session.getMapper(FeatureResultMapper.class);
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 3; j++) {
+                    final FeatureResult result = new FeatureResult();
+                    setFeatureResult(instance, result, null);
+                    list.add(result);
+                }
+                mapper.batchInsert(list);
+                session.commit();
+                list.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -85,7 +114,7 @@ public class GenerateTestData {
     private void setFeatureResult(ChineseMobileNumberGenerator instance, FeatureResult result, Long id) {
         String IDCardNumber = ChineseIDCardNumberGenerator.getInstance().generate();
         result.setId(id);
-        result.setBk_certnovalidday_i(add(Calendar.YEAR, new Random().nextInt(10)));
+        result.setBk_certnovalidday_i(getRandomDateAfterNow());
         result.setName(ChineseNameGenerator.getInstance().generate());
         result.setCertNo(IDCardNumber);
         result.setAge(getIdCardAge(IDCardNumber));
@@ -214,10 +243,12 @@ public class GenerateTestData {
         return sb.toString();
     }
 
-    private static Date add(int calendarField, int amount) {
+    private static Date getRandomDateAfterNow() {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());
-        c.add(calendarField, amount);
+        c.add(Calendar.YEAR, new Random().nextInt(10));
+        c.add(Calendar.MONTH, new Random().nextInt(10));
+        c.add(Calendar.DATE, new Random().nextInt(300));
         return c.getTime();
     }
 }
