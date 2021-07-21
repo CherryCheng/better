@@ -16,7 +16,7 @@ public class FeatureResult {
     private String certNo;
     private String age;
     private String mobile;
-    private Date bk_certnovalidday_i;
+    private Integer bk_certnovalidday_i;
     private Date apply_time;
     private String marry_status;
     private String work_company;

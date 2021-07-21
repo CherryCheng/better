@@ -110,6 +110,7 @@ public class GenerateTestData {
                 final List<Long> allIds = mapper.getAllIds();
                 for (Long id : allIds) {
                     final FeatureResult result = new FeatureResult();
+                    // 成茹: todo 注意，这里除了默认值全改了
                     setFeatureResult(instance, result, id);
                     mapper.update(result);
                     list.add(result);
@@ -170,11 +171,9 @@ public class GenerateTestData {
         final GenericGenerator idCardGen = ChineseIDCardNumberGenerator.getInstance();
         String IDCardNumber = idCardGen.generate();
         result.setId(id);
-        // 成茹: todo  如果是修改，哪些不用改？
-//        if (id != null) {
-//
-//        }
-        result.setBk_certnovalidday_i(getRandomDateAfterNow());
+//        范围：-200天到10年
+        final int bk_certnovalidday_i = new Random().nextInt(10 * 365) - 200;
+        result.setBk_certnovalidday_i(bk_certnovalidday_i);
         result.setName(ChineseNameGenerator.getInstance().generate());
         result.setCertNo(IDCardNumber);
         result.setAge(getIdCardAge(IDCardNumber));

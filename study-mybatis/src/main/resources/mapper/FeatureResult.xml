@@ -138,6 +138,6 @@
         select id
         from feature_result
         where bk_certnovalidday_i is null
-        order by id desc limit 10;
+        order by id desc limit 100;
     </select>
 </mapper>
