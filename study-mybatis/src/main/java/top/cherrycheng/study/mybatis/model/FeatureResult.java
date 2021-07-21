@@ -33,6 +33,9 @@ public class FeatureResult {
     private String device_type;
     private String device_mac;
     private String device_risk;
-
+    private String nation;
+    private Date birth;
+    private String id_card_address;
+    private String id_card_sign_office;
 
 }

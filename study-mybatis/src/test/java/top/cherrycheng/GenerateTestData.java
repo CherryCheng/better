@@ -1,9 +1,12 @@
 package top.cherrycheng;
 
+import cn.binarywang.tools.generator.ChineseAddressGenerator;
 import cn.binarywang.tools.generator.ChineseIDCardNumberGenerator;
 import cn.binarywang.tools.generator.ChineseMobileNumberGenerator;
 import cn.binarywang.tools.generator.ChineseNameGenerator;
+import cn.binarywang.tools.generator.base.GenericGenerator;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -35,13 +40,35 @@ public class GenerateTestData {
 //            System.out.println(getRandomDate("2020-10-10","2021-07-20"));
 //            System.out.println(getRandomMac());
 //            System.out.println(getRandomWorkCompany());
-            System.out.println(getRandomDateAfterNow());
+//            System.out.println(getRandomDateAfterNow());
+//            System.out.println(NationalityEnum.getRandomNationMoreHanNoSpecial());
+            System.out.println(getBirth(ChineseIDCardNumberGenerator.getInstance().generate()));
         }
     }
 
+
     /**
-     * 批量生成数据
+     * // 成茹: todo 多开线程跑，是这样意思？
      */
+    @Test
+    public void mutiThread() throws IOException {
+        new Thread(() -> {
+            try {
+                batchUpdateInfo();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                batchUpdateInfo();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
     @Test
     public void batchInsert() throws IOException {
         String resource = "mybatis-config.xml";
@@ -140,7 +167,8 @@ public class GenerateTestData {
     }
 
     private void setFeatureResult(ChineseMobileNumberGenerator instance, FeatureResult result, Long id) {
-        String IDCardNumber = ChineseIDCardNumberGenerator.getInstance().generate();
+        final GenericGenerator idCardGen = ChineseIDCardNumberGenerator.getInstance();
+        String IDCardNumber = idCardGen.generate();
         result.setId(id);
         // 成茹: todo  如果是修改，哪些不用改？
 //        if (id != null) {
@@ -165,6 +193,10 @@ public class GenerateTestData {
         result.setDevice_type(getRandomDeviceType());
         result.setDevice_mac(getRandomMac());
         result.setDevice_risk(getRandomDeviceRisk());
+        result.setNation(NationalityEnum.getRandomNationMoreHanNoSpecial());
+        result.setBirth(getBirth(IDCardNumber));
+        result.setId_card_sign_office(ChineseIDCardNumberGenerator.generateIssueOrg());
+        result.setId_card_address(ChineseAddressGenerator.getInstance().generate());
     }
 
     /**
@@ -215,9 +247,22 @@ public class GenerateTestData {
     }
 
     public static String getIdCardAge(String idCard) {
-        final LocalDate birth = LocalDate.parse(idCard.substring(6, 14), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        final LocalDate birth = getBirthLocalDate(idCard);
         return ChronoUnit.YEARS.between(birth, LocalDate.now()) + "";
     }
+
+    private static LocalDate getBirthLocalDate(String idCard) {
+        final LocalDate birth = LocalDate.parse(idCard.substring(6, 14), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return birth;
+    }
+
+
+    public static Date getBirth(String idCard) {
+        final LocalDate localDate = getBirthLocalDate(idCard);
+        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+        return Date.from(zonedDateTime.toInstant());
+    }
+
 
     public static String getRandomIp() {
         Random r = new Random();
@@ -282,5 +327,88 @@ public class GenerateTestData {
         c.add(Calendar.MONTH, new Random().nextInt(10));
         c.add(Calendar.DATE, new Random().nextInt(300));
         return c.getTime();
+    }
+
+    public enum NationalityEnum {
+        //        数据来源
+// http://www.nbyz.gov.cn/art/2020/9/27/art_1229107563_58678611.html
+        HAN("1", "汉族"),
+        MONGOL("2", "蒙古族"),
+        HUI("3", "回族"),
+        TIBETAN("4", "藏族"),
+        UYGHUR("5", "维吾尔族"),
+        MIAO("6", "苗族"),
+        YI("7", "彝族"),
+        ZHUANG("8", "壮族"),
+        BUYEI("9", "布依族"),
+        KOREAN("10", "朝鲜族"),
+        MANCHU("11", "满族"),
+        DONG("12", "侗族"),
+        YAO("13", "瑶族"),
+        BAI("14", "白族"),
+        TUJIA("15", "土家族"),
+        HANI("16", "哈尼族"),
+        KAZAK("17", "哈萨克族"),
+        DAI("18", "傣族"),
+        LI("19", "黎族"),
+        LISU("20", "傈僳族"),
+        VA("21", "佤族"),
+        SHE("22", "畲族"),
+        GAOSHAN("23", "高山族"),
+        LAHU("24", "拉祜族"),
+        SUI("25", "水族"),
+        DONGXIANG("26", "东乡族"),
+        NAXI("27", "纳西族"),
+        JINGPO("28", "景颇族"),
+        KIRGIZ("29", "柯尔克孜族"),
+        TU("30", "土族"),
+        DAUR("31", "达斡尔族"),
+        MULAO("32", "仫佬族"),
+        QIANG("33", "羌族"),
+        BLANG("34", "布朗族"),
+        SALAR("35", "撒拉族"),
+        MAONAN("36", "毛南族"),
+        GELAO("37", "仡佬族"),
+        XIBE("38", "锡伯族"),
+        ACHANG("39", "阿昌族"),
+        PUMI("40", "普米族"),
+        TAJIK("41", "塔吉克族"),
+        NU("42", "怒族"),
+        UZBEK("43", "乌孜别克族"),
+        RUSSIANS("44", "俄罗斯族"),
+        EWENKI("45", "鄂温克族"),
+        DEANG("46", "德昂族"),
+        BONAN("47", "保安族"),
+        YUGUR("48", "裕固族"),
+        GIN("49", "京族"),
+        TATAR("50", "塔塔尔族"),
+        DERUNG("51", "独龙族"),
+        OROQEN("52", "鄂伦春族"),
+        HEZHEN("53", "赫哲族"),
+        MONBA("54", "门巴族"),
+        LHOBA("55", "珞巴族"),
+        JINO("56", "基诺族"),
+        OTHER("97", "未定族称人口"),
+        FOREIGN_COUNTRY("98", "入籍");
+
+        @Getter
+        private String code;
+        @Getter
+        private String desc;
+
+        NationalityEnum(String code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        /**
+         * 随机一个民族，多汉簇，无特殊民族
+         */
+        public static String getRandomNationMoreHanNoSpecial() {
+            NationalityEnum[] nationalityEnums = values();
+
+            final int i = new Random().nextInt(56) > 10 ? 0 : new Random().nextInt(56);
+            return nationalityEnums[i].desc;
+        }
     }
 }
