@@ -16,7 +16,7 @@
          work_company,
          income_range, contact_name1, contact_relation1, contact_mobile1, contact_remark1, contact_name2,
          contact_relation2, contact_mobile2, contact_remark2, request_ip, device_type, device_mac
-, device_risk,nation,birth,id_card_address,id_card_sign_office
+, device_risk,nation,birth,id_card_address,id_card_sign_office,id_card_valid_end
     </sql>
 
 
@@ -37,7 +37,7 @@
         #{contact_name1},
         #{contact_relation1}, #{contact_mobile1}, #{contact_remark1}, #{contact_name2}, #{contact_relation2},
         #{contact_mobile2}, #{contact_remark2}, #{request_ip}, #{device_type}, #{device_mac}, #{device_risk}
-        ,#{nation},#{birth},#{id_card_address},#{id_card_sign_office});
+        ,#{nation},#{birth},#{id_card_address},#{id_card_sign_office},#{id_card_valid_end});
     </insert>
     <insert id="batchInsert">
         INSERT INTO feature_result (
@@ -58,7 +58,7 @@
             , #{item.contact_mobile1}, #{item.contact_remark1}, #{item.contact_name2}, #{item.contact_relation2}
             ,#{item.contact_mobile2}, #{item.contact_remark2}, #{item.request_ip}, #{item.device_type}
             , #{item.device_mac}, #{item.device_risk},#{item.nation},#{item.birth},#{item.id_card_address}
-            ,#{item.id_card_sign_office})
+            ,#{item.id_card_sign_office},#{item.id_card_valid_end})
         </foreach>
     </insert>
     <update id="batchUpdate" parameterType="java.util.List">
@@ -86,7 +86,7 @@
             device_mac=#{item.device_mac},
             device_risk=#{item.device_risk}
             ,nation=#{item.nation},birth=#{item.birth},id_card_address=#{item.id_card_address}
-            ,id_card_sign_office=#{item.id_card_sign_office}
+            ,id_card_sign_office=#{item.id_card_sign_office},id_card_valid_end=#{item.id_card_valid_end}
             where id = #{item.id}
         </foreach>
     </update>
@@ -118,7 +118,8 @@
             birth=#{birth},
             id_card_address=#{id_card_address}
                 ,
-            id_card_sign_office=#{id_card_sign_office}
+            id_card_sign_office=#{id_card_sign_office},
+            id_card_valid_end=#{id_card_valid_end}
         where id = #{id}
     </select>
     <insert id="insertByDefault" parameterType="top.cherrycheng.study.mybatis.model.FeatureResult" keyProperty="">
@@ -131,7 +132,8 @@
                 #{work_company}, #{income_range},
                 #{contact_name1}, #{contact_relation1}, #{contact_mobile1}, #{contact_remark1}, #{contact_name2},
                 #{contact_relation2}, #{contact_mobile2}, #{contact_remark2}, #{request_ip}, #{device_type},
-                #{device_mac}, #{device_risk}, #{nation}, #{birth}, #{id_card_address}, #{id_card_sign_office});
+                #{device_mac}, #{device_risk}, #{nation}, #{birth}, #{id_card_address}, #{id_card_sign_office}
+                   , #{id_card_valid_end});
     </insert>
     <select id="getAllIds" resultType="java.lang.Long">
         -- 身份证为空的前十条

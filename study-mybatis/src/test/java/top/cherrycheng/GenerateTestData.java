@@ -43,6 +43,7 @@ public class GenerateTestData {
 //            System.out.println(getRandomDateAfterNow());
 //            System.out.println(NationalityEnum.getRandomNationMoreHanNoSpecial());
             System.out.println(getBirth(ChineseIDCardNumberGenerator.getInstance().generate()));
+
         }
     }
 
@@ -84,6 +85,7 @@ public class GenerateTestData {
                     setFeatureResult(instance, result, null);
                     list.add(result);
                 }
+
                 mapper.batchInsert(list);
                 session.commit();
                 list.clear();
@@ -196,6 +198,7 @@ public class GenerateTestData {
         result.setBirth(getBirth(IDCardNumber));
         result.setId_card_sign_office(ChineseIDCardNumberGenerator.generateIssueOrg());
         result.setId_card_address(ChineseAddressGenerator.getInstance().generate());
+        result.setId_card_valid_end(getRandomDateAfterNow());
     }
 
     /**
