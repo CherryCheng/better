@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>study-mybatis</module>
+        <module>unit-test</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
