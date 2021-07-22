@@ -55,7 +55,7 @@ public class GenerateTestData {
     public void mutiThread() throws IOException {
         new Thread(() -> {
             try {
-                batchUpdateInfo();
+                batchInsert();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,7 +63,7 @@ public class GenerateTestData {
 
         new Thread(() -> {
             try {
-                batchUpdateInfo();
+                batchInsert();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -72,6 +72,7 @@ public class GenerateTestData {
 
     @Test
     public void batchInsert() throws IOException {
+        final long begin = System.currentTimeMillis();
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         ChineseMobileNumberGenerator instance = ChineseMobileNumberGenerator.getInstance();
@@ -79,8 +80,8 @@ public class GenerateTestData {
         List<FeatureResult> list = Lists.newArrayList();
         try (SqlSession session = sqlSessionFactory.openSession()) {
             final FeatureResultMapper mapper = session.getMapper(FeatureResultMapper.class);
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 50; i++) {
+                for (int j = 0; j < 2000; j++) {
                     final FeatureResult result = new FeatureResult();
                     setFeatureResult(instance, result, null);
                     list.add(result);
@@ -93,6 +94,8 @@ public class GenerateTestData {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(System.currentTimeMillis() - begin);
+        ;
     }
 
     /**
