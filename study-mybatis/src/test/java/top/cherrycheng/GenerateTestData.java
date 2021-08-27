@@ -23,7 +23,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author ChengRu
@@ -53,21 +57,27 @@ public class GenerateTestData {
      */
     @Test
     public void mutiThread() throws IOException {
-        new Thread(() -> {
-            try {
-                batchInsert();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        batchInsert();
+    }
 
-        new Thread(() -> {
-            try {
-                batchInsert();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    @Test
+    public void mutiThread1() throws IOException {
+        batchInsert();
+    }
+
+    @Test
+    public void mutiThread2() throws IOException {
+        batchInsert();
+    }
+
+    @Test
+    public void mutiThread3() throws IOException {
+        batchInsert();
+    }
+
+    @Test
+    public void mutiThread4() throws IOException {
+        batchInsert();
     }
 
     @Test
@@ -80,7 +90,7 @@ public class GenerateTestData {
         List<FeatureResult> list = Lists.newArrayList();
         try (SqlSession session = sqlSessionFactory.openSession()) {
             final FeatureResultMapper mapper = session.getMapper(FeatureResultMapper.class);
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 250; i++) {
                 for (int j = 0; j < 2000; j++) {
                     final FeatureResult result = new FeatureResult();
                     setFeatureResult(instance, result, null);
