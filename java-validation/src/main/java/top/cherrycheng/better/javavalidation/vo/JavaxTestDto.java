@@ -43,4 +43,7 @@ public class JavaxTestDto {
      */
     @Pattern(regexp = "^([0-9]{11})?$")
     private String mobileNo;
+
+    private String certNo;
+    private String name;
 }
