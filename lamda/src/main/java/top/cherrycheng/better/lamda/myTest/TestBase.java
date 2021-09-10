@@ -5,6 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  * @author ChengRu
  * @date 2021/9/6 7:12
@@ -18,13 +23,21 @@ public class TestBase {
         //        Person build = person.builder().name("tom").race("白种人").build();
         //        System.out.println(build);
 
-        //        String s = null;
-        Person s = new Person();
-        if (s.getName() == null) {
+        List<Person> list = new ArrayList<Person>() {{
+            add(new Person().setName("niki").setRace(""));
+            add(new Person().setName("bili").setRace(""));
+            add(new Person().setName("mary").setRace(""));
+            add(new Person().setName("yahoo").setRace(""));
+        }};
 
-            //        if (null == s.getName()) {
-            System.out.println("null");
-        }
+        System.out.println(list2String(list, Person::getName));
+        //        拆开就是如下匿名内部类，以上是lambda的简写
+        //        System.out.println(list2String(list,new Function<Person, String>(){
+        //            @Override
+        //            public String apply(Person person) {
+        //                return person.getName();
+        //            }
+        //        }));
 
     }
 
@@ -42,5 +55,9 @@ public class TestBase {
          * 人种
          */
         private String race;
+    }
+
+    public static String list2String(List<Person> list, Function<Person, String> function) {
+        return list.parallelStream().map(function).collect(Collectors.joining(","));
     }
 }
